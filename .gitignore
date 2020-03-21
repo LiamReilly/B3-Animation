@@ -13,6 +13,7 @@
 # ===================================== #
 **/[Ee]xported[Oo]bj/
 **/.vs/
+**/.vscode/
 **/*.userprefs
 **/*.csproj
 **/*.pidb
