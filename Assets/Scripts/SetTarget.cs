@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
 public class SetTarget : MonoBehaviour
 {
     NavMeshAgent agentFab;
@@ -13,6 +15,9 @@ public class SetTarget : MonoBehaviour
     private const float BUMP_STEP = 1.005f;
     private float bumpCount = 1;
     private float currDistSqr = 100;
+    Animator anim;
+    Vector2 smoothDeltaPosition = Vector2.zero;
+    Vector2 velocity = Vector2.zero;
 
     ObjectSelection Selectionmanager;
 
@@ -21,13 +26,35 @@ public class SetTarget : MonoBehaviour
     {
         agentFab = GetComponent<NavMeshAgent>();
         Selectionmanager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<ObjectSelection>();
-		//rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
+        agentFab.updatePosition = false;
         
+
     }
 
     // Update is called once per frame
+    private void Update()
+    {
+        Vector3 worldDeltaPosition = agentFab.nextPosition - transform.position;
+        float dx = Vector3.Dot(transform.right, worldDeltaPosition);
+        float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
+        Vector2 deltaPosition = new Vector2(dx, dy);
+        float smooth = Mathf.Min(1.0f, Time.deltaTime / 0.15f);
+        smoothDeltaPosition = Vector2.Lerp(smoothDeltaPosition, deltaPosition, smooth);
+        if (Time.deltaTime > 1e-5f)
+            velocity = smoothDeltaPosition / Time.deltaTime;
+        bool shouldMove = velocity.magnitude > 0.5f && agentFab.remainingDistance > agentFab.radius;
+        anim.SetBool("Move", shouldMove);
+        anim.SetFloat("velocityx", velocity.x);
+        anim.SetFloat("velocityy", velocity.y);
+        GetComponent<LookAt>().lookAtTargetPosition = agentFab.steeringTarget + transform.forward;
+    }
+
     void LateUpdate()
     {
+        
+
         currDistSqr = (gameObject.transform.position - agentFab.destination).sqrMagnitude;
 
         //if(!immobile)print(gameObject.name+": " +currDistSqr);
@@ -83,7 +110,11 @@ public class SetTarget : MonoBehaviour
         //rb.AddForce(direction);
         gameObject.transform.Translate(direction);
     }
-
+    void OnAnimatorMove()
+    {
+        // Update position to agent position
+        transform.position = agentFab.nextPosition;
+    }
 
 }
 
