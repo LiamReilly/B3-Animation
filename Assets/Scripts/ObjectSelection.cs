@@ -19,11 +19,16 @@ public class ObjectSelection : MonoBehaviour
     float distance;
     GameObject Creator;
     public int radius;
+    public Camera CameraThird;
+    private GameObject Canvas;
+    private GameObject WasdMan;
 
     // Start is called before the first frame update
     void Start()
     {
         Creator = GameObject.Find("AgentCreator");
+        Canvas = GameObject.Find("Canvas");
+        WasdMan = GameObject.Find("WASD_Adam_General_Animations");
     }
 
    /* private void FixedUpdate()
@@ -74,6 +79,13 @@ public class ObjectSelection : MonoBehaviour
                     Instantiate(errorSphere, hit.point, Quaternion.identity);
                     
                 }
+                if (hit.transform.tag == "Controllable")
+                {
+                    CameraThird.gameObject.SetActive(true);
+                    Canvas.transform.GetChild(0).gameObject.SetActive(true);
+                    WasdMan.GetComponent<Controller>().enabled = true;
+                    gameObject.SetActive(false);
+                }
 
                 else if (hit.transform.tag == "Agent")
                 {
@@ -84,7 +96,7 @@ public class ObjectSelection : MonoBehaviour
                         GroupAgents.Add(hit.transform.gameObject);
                         added.Add(hit.transform.gameObject);
                     }
-                    else if(!added.Contains(hit.transform.gameObject))
+                    else if (!added.Contains(hit.transform.gameObject))
                     {
                         /*MeshRenderer gameObjectRenderer = hit.transform.gameObject.GetComponent<MeshRenderer>();
                         gameObjectRenderer.material = DeselectedColor;*/
