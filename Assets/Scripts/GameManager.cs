@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     private GameObject Third;
     private GameObject Canvas;
     private GameObject WasdMan;
+    public GameObject NavMan;
+    private GameObject Creatormanager;
+    private GameObject SelectButton;
+    public GameObject DeselectButton;
 
 
     private void Start()
@@ -18,6 +22,8 @@ public class GameManager : MonoBehaviour
         Canvas = GameObject.Find("Canvas");
         WasdMan = GameObject.Find("WASD_Adam_General_Animations");
         Canvas.transform.GetChild(1).gameObject.SetActive(true);
+        Creatormanager = GameObject.Find("AgentCreator");
+        SelectButton = GameObject.Find("SelectAll");
         StartCoroutine(wait3Seconds());
     }
 
@@ -40,6 +46,24 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         Canvas.transform.GetChild(1).gameObject.SetActive(false);
+    }
+    public void MakeAgent()
+    {
+        Creatormanager.gameObject.GetComponent<AgentCreater>().addAgent();
+    }
+    public void SelectAll()
+    {
+        //source1.Play();
+        Creatormanager.gameObject.GetComponent<AgentCreater>().SelectAll();
+        SelectButton.gameObject.SetActive(false);
+        DeselectButton.gameObject.SetActive(true);
+    }
+    public void DeselectAll()
+    {
+        //source1.Play();
+        Creatormanager.gameObject.GetComponent<AgentCreater>().DeselectAll();
+        SelectButton.gameObject.SetActive(true);
+        DeselectButton.gameObject.SetActive(false);
     }
 
 }

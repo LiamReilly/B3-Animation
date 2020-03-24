@@ -12,6 +12,7 @@ public class Controller : MonoBehaviour
     Animator anim;
     public float Speed;
     public Camera cam;
+    bool shouldTurn;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,6 @@ public class Controller : MonoBehaviour
             float horz = Input.GetAxis("Horizontal") * Time.deltaTime * Speed;
             //Debug.Log(horz);
             //Debug.Log(vert);
-            gameObject.transform.Translate(horz, 0, vert);
             velocity = rb.velocity;
             anim.SetFloat("velocityx", horz * Speed);
             anim.SetFloat("velocityy", vert * Speed);
@@ -53,6 +53,25 @@ public class Controller : MonoBehaviour
             if (Input.GetKey(KeyCode.Delete))
             {
                 anim.SetTrigger("Die");
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                shouldTurn = true;
+                anim.SetBool("shouldturn", shouldTurn);
+                anim.SetFloat("turn", -1f);
+            } else if (Input.GetKey(KeyCode.E))
+            {
+                shouldTurn = true;
+                anim.SetBool("shouldturn", shouldTurn);
+                anim.SetFloat("turn", 1f);
+            } else
+            {
+                shouldTurn = false;
+                anim.SetBool("shouldturn", shouldTurn);
+            } 
+            if (!shouldTurn)
+            {
+                gameObject.transform.Translate(horz, 0, vert);
             }
         }
         
