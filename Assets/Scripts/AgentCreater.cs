@@ -39,6 +39,7 @@ public class AgentCreater : MonoBehaviour
             //newAgent.transform.position = new Vector3((Random.value - 0.5f) * radius, 0.5f, ((Random.value - 0.5f)) * radius);
             newAgent.name = "a" + i;
             newAgent.transform.parent = agParent.transform;
+            newAgent.gameObject.GetComponent<Light>().enabled = false;
 
             CreatedAgents.Add(newAgent);
             Count++;
@@ -62,6 +63,7 @@ public class AgentCreater : MonoBehaviour
             var newAgent = Instantiate(agent, location, Quaternion.identity);
             newAgent.name = "a" + Count;
             newAgent.transform.parent = agParent.transform;
+            newAgent.gameObject.GetComponent<Light>().enabled = false;
             CreatedAgents.Add(newAgent);
             Count++;
         }
@@ -72,6 +74,7 @@ public class AgentCreater : MonoBehaviour
         {
             /*MeshRenderer gameObjectRenderer = item.gameObject.GetComponent<MeshRenderer>();
             gameObjectRenderer.material = SelectedColor;*/
+            item.gameObject.GetComponent<Light>().enabled = true;
             Selectionmanager.GroupAgents.Add(item);
         }
     }
@@ -84,6 +87,7 @@ public class AgentCreater : MonoBehaviour
             if (Selectionmanager.GroupAgents.Contains(item))
             {
                 Selectionmanager.GroupAgents.Remove(item);
+                item.gameObject.GetComponent<Light>().enabled = false;
                 item.GetComponent<SetTarget>().SetDestination(item.transform.position);
             }
             

@@ -13,6 +13,7 @@ public class Controller : MonoBehaviour
     public float Speed;
     public Camera cam;
     bool shouldTurn;
+    bool jumping;
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +50,8 @@ public class Controller : MonoBehaviour
             if (Input.GetKey(KeyCode.Space))
             {
                 anim.SetTrigger("Jump");
+                jumping = true;
+                StartCoroutine(wait1Seconds());
             }
             if (Input.GetKey(KeyCode.Delete))
             {
@@ -69,11 +72,16 @@ public class Controller : MonoBehaviour
                 shouldTurn = false;
                 anim.SetBool("shouldturn", shouldTurn);
             } 
-            if (!shouldTurn)
+            if (!shouldTurn||!jumping)
             {
                 gameObject.transform.Translate(horz, 0, vert);
             }
         }
-        
+        IEnumerator wait1Seconds()
+        {
+            yield return new WaitForSeconds(3);
+            jumping = false;
+        }
+
     }
 }

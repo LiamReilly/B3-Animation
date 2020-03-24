@@ -94,6 +94,7 @@ public class ObjectSelection : MonoBehaviour
                         /*MeshRenderer gameObjectRenderer = hit.transform.gameObject.GetComponent<MeshRenderer>();
                         gameObjectRenderer.material = SelectedColor;*/
                         GroupAgents.Add(hit.transform.gameObject);
+                        hit.transform.GetComponent<Light>().enabled = true;
                         added.Add(hit.transform.gameObject);
                     }
                     else if (!added.Contains(hit.transform.gameObject))
@@ -101,11 +102,12 @@ public class ObjectSelection : MonoBehaviour
                         /*MeshRenderer gameObjectRenderer = hit.transform.gameObject.GetComponent<MeshRenderer>();
                         gameObjectRenderer.material = DeselectedColor;*/
                         GroupAgents.Remove(hit.transform.gameObject);
+                        hit.transform.GetComponent<Light>().enabled = false;
                         hit.transform.gameObject.GetComponent<SetTarget>().SetDestination(hit.transform.position);
 
                     }
                     return;
-                }
+                }/*
                 else if (hit.transform.tag == "moveObstacle")
                 {
                     if (moveableObstacles.Contains(hit.transform.gameObject))
@@ -121,7 +123,7 @@ public class ObjectSelection : MonoBehaviour
                         moveableObstacles.Add(hit.transform.gameObject);
                         objectsMoveable = true;
                     }
-                }
+                }*/
                 /*if (hit.transform.tag == "Adversary")
                 {
                     if (GroupAdversary.Contains(hit.transform.gameObject))
