@@ -5,15 +5,20 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     public Rigidbody rb;
-    private bool move;
+    public FootBox feet;
+    
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector2 velocity = Vector2.zero;
+    
     ObjectSelection Selectionmanager;
     Animator anim;
+
     public float Speed;
     public Camera cam;
+    
     bool shouldTurn;
     bool jumping;
+    private bool move;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +26,8 @@ public class Controller : MonoBehaviour
         Selectionmanager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<ObjectSelection>();
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        //feet = GetComponent<FootBox>();
+        feet.setOT(() => jumping = false);
     }
 
     // Update is called once per frame
@@ -43,11 +50,13 @@ public class Controller : MonoBehaviour
             {
                 move = false;
             }
+
             /*if (horz < 0) anim.speed = 2;
             else anim.speed = 1;*/
             //Debug.Log(velocity.x);
+            
             anim.SetBool("Move", move);
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space) && !jumping)
             {
                 anim.SetTrigger("Jump");
                 jumping = true;
@@ -72,14 +81,14 @@ public class Controller : MonoBehaviour
                 shouldTurn = false;
                 anim.SetBool("shouldturn", shouldTurn);
             } 
-            if (!shouldTurn||!jumping)
-            {
+            //if (!shouldTurn || !jumping)
+            //{
                 gameObject.transform.Translate(horz, 0, vert);
-            }
+            //}
         }
         IEnumerator wait1Seconds()
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(1);
             jumping = false;
         }
 
