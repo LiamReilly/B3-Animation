@@ -5,7 +5,6 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     public Rigidbody rb;
-    public FootBox feet;
     private SetTarget AutoMan;
     
     Vector2 smoothDeltaPosition = Vector2.zero;
@@ -25,14 +24,14 @@ public class Controller : MonoBehaviour
     Vector3 CharSpeed;
 
 
+    public PartTracker foot1, foot2, head;
+
     // Start is called before the first frame update
     void Start()
     {
         Selectionmanager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<ObjectSelection>();
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-        //feet = GetComponent<FootBox>();
-        feet.setOT(() => jumping = false);
         AutoMan = GameObject.Find("AgentCreator").gameObject.transform.GetChild(0).GetComponent<SetTarget>();
 
     }
