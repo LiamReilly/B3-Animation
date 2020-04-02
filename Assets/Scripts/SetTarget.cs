@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
@@ -18,17 +19,21 @@ public class SetTarget : MonoBehaviour
     Animator anim;
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector2 velocity = Vector2.zero;
+    private float xMin = -0.5f, xMax = 0.5f;
+    private bool walking = true;
+    private GameObject Speedstate;
 
     ObjectSelection Selectionmanager;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         agentFab = GetComponent<NavMeshAgent>();
         Selectionmanager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<ObjectSelection>();
         //rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         agentFab.updatePosition = false;
+        Speedstate = GameObject.Find("SpeedState");
         
 
     }
@@ -36,6 +41,16 @@ public class SetTarget : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            walking = true;
+            Speedstate.GetComponent<Text>().text = "Walking";
+        }
+        if (Input.GetKey(KeyCode.Alpha2))
+        {
+            walking = false;
+            Speedstate.GetComponent<Text>().text = "Running";
+        }
         Vector3 worldDeltaPosition = agentFab.nextPosition - transform.position;
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
         float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
@@ -46,8 +61,19 @@ public class SetTarget : MonoBehaviour
             velocity = smoothDeltaPosition / Time.deltaTime;
         bool shouldMove = velocity.magnitude > 0.5f && agentFab.remainingDistance > agentFab.radius;
         anim.SetBool("Move", shouldMove);
-        anim.SetFloat("velocityx", velocity.x);
-        anim.SetFloat("velocityy", velocity.y);
+        if (walking)
+        {
+            anim.SetFloat("velocityx", Mathf.Clamp(velocity.x, xMin, xMax));
+            anim.SetFloat("velocityy", Mathf.Clamp(velocity.y, xMin, xMax));
+           
+        }
+        else
+        {
+            anim.SetFloat("velocityx", velocity.x);
+            anim.SetFloat("velocityy", velocity.y);
+            
+        }
+        
         GetComponent<LookAt>().lookAtTargetPosition = agentFab.steeringTarget + transform.forward;
     }
 
@@ -115,7 +141,10 @@ public class SetTarget : MonoBehaviour
         // Update position to agent position
         transform.position = agentFab.nextPosition;
     }
-
+    public bool walkingTell()
+    {
+        return walking;
+    }
 }
 
 

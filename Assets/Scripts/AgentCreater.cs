@@ -20,7 +20,7 @@ public class AgentCreater : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Selectionmanager = GameObject.Find("Camera").gameObject.GetComponent<ObjectSelection>();
         Count = 0;
