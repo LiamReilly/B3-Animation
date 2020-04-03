@@ -202,7 +202,7 @@ public class Controller : MonoBehaviour
             }
 
             if(jumping){
-               capsule.transform.SetPositionAndRotation(new Vector3(capsule.transform.position.x, foot1.transform.position.y, capsule.transform.position.z), gameObject.transform.rotation);
+               capsule.transform.SetPositionAndRotation(new Vector3(capsule.transform.position.x,  foot1.transform.position.y, capsule.transform.position.z), gameObject.transform.rotation);
                print(foot1.transform.position.y);
             }else{
             }

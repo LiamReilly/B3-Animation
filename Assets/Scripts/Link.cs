@@ -15,6 +15,7 @@ public class Link : MonoBehaviour
     NavMeshAgent agent;
     bool linking;
     float origSpeed;
+    bool jump = false;
 
     // just change linkspeed to alter off mesh link traverse speed;
     public float linkSpeed;
@@ -27,12 +28,22 @@ public class Link : MonoBehaviour
         linking = false;
     }
 
-    void FixedUpdate()
+    void Update()
     {
+        if (agent.isOnOffMeshLink)
+        {
+            if (!jump)
+            {
+                anim.Play("Jump", 0, 0.25f);
+                jump = true;
+                //anim.speed = 1.5f;
+            }
+            StartCoroutine(wait3Seconds());
+        }
         if (agent.isOnOffMeshLink && linking == false)
         {
             linking = true;
-            anim.SetTrigger("Jump");
+            
             agent.speed = agent.speed * linkSpeed;
         }
         else if (agent.isOnNavMesh && linking == true)
@@ -40,8 +51,17 @@ public class Link : MonoBehaviour
             linking = false;
             agent.velocity = Vector3.zero;
             agent.speed = origSpeed;
+            
         }
     }
+    IEnumerator wait3Seconds()
+    {
+        yield return new WaitForSeconds(1f);
+        //anim.SetBool("gonnaJump", false);
+        jump = false;
+        anim.speed = 1;
+    }
+
 }
 
    
