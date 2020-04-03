@@ -627,7 +627,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree 0
+  m_Name: Turning
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -693,7 +693,7 @@ AnimatorStateMachine:
     m_Position: {x: 210, y: 320, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -20825532069416159}
-    m_Position: {x: -160, y: 120, z: 0}
+    m_Position: {x: -250, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1260333295185260325}
     m_Position: {x: 440, y: 300, z: 0}
