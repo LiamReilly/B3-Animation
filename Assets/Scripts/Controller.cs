@@ -40,7 +40,7 @@ public class Controller : MonoBehaviour
         capsule = GetComponent<CapsuleCollider>();
         print(capsule.transform.position);
         print(foot1.transform.position);
-        
+
         ogParent = capsule.transform.parent;
 
     }
