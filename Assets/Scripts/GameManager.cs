@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     private GameObject Creatormanager;
     private GameObject SelectButton;
     public GameObject DeselectButton;
+    private AudioSource audio1;
+    private bool play;
 
 
     private void Start()
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour
         Creatormanager = GameObject.Find("AgentCreator");
         SelectButton = GameObject.Find("SelectAll");
         StartCoroutine(wait3Seconds());
+        audio1 = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -64,6 +67,20 @@ public class GameManager : MonoBehaviour
         Creatormanager.gameObject.GetComponent<AgentCreater>().DeselectAll();
         SelectButton.gameObject.SetActive(true);
         DeselectButton.gameObject.SetActive(false);
+    }
+
+    public void GSC()
+    {
+        if (!play)
+        {
+            audio1.Play();
+            play = true;
+        }
+        else
+        {
+            audio1.Stop();
+            play = false;
+        }
     }
 
 }
