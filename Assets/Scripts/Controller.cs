@@ -6,20 +6,21 @@ public class Controller : MonoBehaviour
 {
     public Rigidbody rb;
     private SetTarget AutoMan;
-    
+
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector2 velocity = Vector2.zero;
     Vector3 GroundPoint;
-    
+
     ObjectSelection Selectionmanager;
     Animator anim;
 
     public float Speed;
     public float jumpForce;
     public Camera cam;
-    
+
     bool shouldTurn;
     bool jumping;
+    bool inAir;
     private bool move;
     private float xMax = 0.5f, xMin = -0.5f;
     Vector3 CharSpeed;
@@ -121,14 +122,27 @@ public class Controller : MonoBehaviour
         }
     }*/
 
-    public void FixedUpdate(){
-        if (Input.GetKey(KeyCode.Space) && !jumping)
+    public void FixedUpdate()
+    {
+        if (!cam.isActiveAndEnabled)
+        {
+            if (Input.GetKey(KeyCode.Space) && !jumping)
             {
                 anim.SetTrigger("Jump");
                 rb.AddForce(new Vector3(0, jumpForce, 0));
                 jumping = true;
                 StartCoroutine(wait(1.5f));
             }
+        }
+        if (!jumping && !inAir && rb.velocity.y < -0.5f)
+        {
+            inAir = true;
+        }
+        if (inAir && rb.velocity.y >= 0)
+        {
+            inAir = false;
+        }
+
     }
 
     // Update is called once per frame
@@ -142,78 +156,88 @@ public class Controller : MonoBehaviour
             //Debug.Log(vert);
             //velocity = rb.velocity;
             //Debug.Log(rb.velocity);
-            if (AutoMan.walkingTell())
-            {
-                //Debug.Log(AutoMan.walkingTell());
-                anim.SetFloat("velocityx", Mathf.Clamp(horz * Speed, xMin, xMax));
-                anim.SetFloat("velocityy", Mathf.Clamp(vert * Speed, xMin, xMax));
-            }
-            else
-            {
-                anim.SetFloat("velocityx", horz * Speed);
-                anim.SetFloat("velocityy", vert * Speed);
-            }
             
-            if (horz != 0 || vert != 0)
+            if (inAir)
             {
-                move = true;
-            }
-            else
-            {
-                move = false;
+                vert = 0;
+                horz = 0;
             }
 
-            //if (vert <= 1) anim.speed = -1;
-            //else anim.speed = 1;
-            //Debug.Log(velocity.x);
-            
-            anim.SetBool("Move", move);
+                if (AutoMan.walkingTell())
+                {
+                    //Debug.Log(AutoMan.walkingTell());
+                    anim.SetFloat("velocityx", Mathf.Clamp(horz * Speed, xMin, xMax));
+                    anim.SetFloat("velocityy", Mathf.Clamp(vert * Speed, xMin, xMax));
+                }
+                else
+                {
+                    anim.SetFloat("velocityx", horz * Speed);
+                    anim.SetFloat("velocityy", vert * Speed);
+                }
+                if (horz != 0 || vert != 0)
+                {
+                    move = true;
+                }
+                else
+                {
+                    move = false;
+                }
+                //if (vert <= 1) anim.speed = -1;
+                //else anim.speed = 1;
+                //Debug.Log(velocity.x);
+
+                anim.SetBool("Move", move);
+
+
             if (Input.GetKey(KeyCode.Delete))
             {
                 anim.SetTrigger("Die");
             }
-            if (Input.GetKey(KeyCode.Q)&&!move)
+            if (Input.GetKey(KeyCode.Q) && !move)
             {
                 shouldTurn = true;
                 anim.SetBool("shouldturn", shouldTurn);
                 anim.SetFloat("turn", -1f);
-            } else if (Input.GetKey(KeyCode.E)&&!move)
+            }
+            else if (Input.GetKey(KeyCode.E) && !move)
             {
                 shouldTurn = true;
                 anim.SetBool("shouldturn", shouldTurn);
                 anim.SetFloat("turn", 1f);
-            } else
+            }
+            else
             {
                 shouldTurn = false;
                 anim.SetBool("shouldturn", shouldTurn);
-            } 
+            }
             if (!shouldTurn || !jumping)
             {
                 if (AutoMan.walkingTell())
                 {
-                    CharSpeed = new Vector3 (horz * 0.7f, 0, vert * 0.7f);
+                    CharSpeed = new Vector3(horz * 0.7f, 0, vert * 0.7f);
                     //CharSpeed.Normalize();
                     //Debug.Log(CharSpeed);
                     gameObject.transform.Translate(CharSpeed);
-                    
+
                 }
                 else
                 {
                     CharSpeed = new Vector3(horz, 0f, vert);
                     //CharSpeed.Normalize();
                     gameObject.transform.Translate(CharSpeed);
-                    
+
                 }
-                
+
             }
 
-            if(jumping){
-<<<<<<< HEAD
-               capsule.transform.SetPositionAndRotation(new Vector3(capsule.transform.position.x,  foot1.transform.position.y, capsule.transform.position.z), gameObject.transform.rotation);
-               print(foot1.transform.position.y);
-=======
-            }else{
-               // capsule.center = new Vector3(0, 1.001788f, 0);
+            if (jumping)
+            {
+                //    capsule.transform.SetPositionAndRotation(new Vector3(capsule.transform.position.x,  foot1.transform.position.y, capsule.transform.position.z), gameObject.transform.rotation);
+                //    print(foot1.transform.position.y);
+            }
+            else
+            {
+                // capsule.center = new Vector3(0, 1.001788f, 0);
             }
             /*if (!jumping)
             {
@@ -227,15 +251,16 @@ public class Controller : MonoBehaviour
                     gameObject.transform.position = hit.point;
                 }
             }*/
-            
+
         }
-        
-        
+
+
 
     }
     IEnumerator wait(float f)
     {
         yield return new WaitForSeconds(f);
         jumping = false;
+        inAir = true;
     }
 }
