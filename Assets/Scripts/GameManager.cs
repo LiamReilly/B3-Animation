@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public GameObject DeselectButton;
     private AudioSource audio1;
     private bool play;
+    public Material kapadia;
+    public Material wood;
+    public GameObject Room1;
 
 
     private void Start()
@@ -75,11 +78,15 @@ public class GameManager : MonoBehaviour
         {
             audio1.Play();
             play = true;
+            MeshRenderer gameObjectRenderer = Room1.gameObject.GetComponent<MeshRenderer>();
+            gameObjectRenderer.material = kapadia;
         }
         else
         {
             audio1.Stop();
             play = false;
+            MeshRenderer gameObjectRenderer = Room1.gameObject.GetComponent<MeshRenderer>();
+            gameObjectRenderer.material = wood;
         }
     }
 
