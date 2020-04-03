@@ -26,6 +26,9 @@ public class Controller : MonoBehaviour
 
     public PartTracker foot1, foot2, head;
 
+    public CapsuleCollider capsule;
+    private Transform ogParent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,11 @@ public class Controller : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         AutoMan = GameObject.Find("AgentCreator").gameObject.transform.GetChild(0).GetComponent<SetTarget>();
+        capsule = GetComponent<CapsuleCollider>();
+        print(capsule.transform.position);
+        print(foot1.transform.position);
+        
+        ogParent = capsule.transform.parent;
 
     }
 
@@ -191,6 +199,12 @@ public class Controller : MonoBehaviour
                     
                 }
                 
+            }
+
+            if(jumping){
+               capsule.transform.SetPositionAndRotation(new Vector3(capsule.transform.position.x, foot1.transform.position.y, capsule.transform.position.z), gameObject.transform.rotation);
+               print(foot1.transform.position.y);
+            }else{
             }
             /*if (!jumping)
             {
