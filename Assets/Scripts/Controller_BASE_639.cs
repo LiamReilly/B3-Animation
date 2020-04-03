@@ -15,7 +15,6 @@ public class Controller : MonoBehaviour
     Animator anim;
 
     public float Speed;
-    public float jumpForce;
     public Camera cam;
     
     bool shouldTurn;
@@ -120,17 +119,6 @@ public class Controller : MonoBehaviour
             }
         }
     }*/
-
-    public void FixedUpdate(){
-        if (Input.GetKey(KeyCode.Space) && !jumping)
-            {
-                anim.SetTrigger("Jump");
-                rb.AddForce(new Vector3(0, jumpForce, 0));
-                jumping = true;
-                StartCoroutine(wait3Seconds());
-            }
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -171,7 +159,6 @@ public class Controller : MonoBehaviour
             if (Input.GetKey(KeyCode.Space) && !jumping)
             {
                 anim.SetTrigger("Jump");
-                rb.AddForce(new Vector3(0, jumpForce, 0));
                 jumping = true;
                 StartCoroutine(wait3Seconds());
             }
@@ -215,12 +202,9 @@ public class Controller : MonoBehaviour
             }
 
             if(jumping){
-<<<<<<< HEAD
-               capsule.transform.SetPositionAndRotation(new Vector3(capsule.transform.position.x,  foot1.transform.position.y, capsule.transform.position.z), gameObject.transform.rotation);
+               capsule.transform.SetPositionAndRotation(new Vector3(capsule.transform.position.x, foot1.transform.position.y, capsule.transform.position.z), gameObject.transform.rotation);
                print(foot1.transform.position.y);
-=======
             }else{
-               // capsule.center = new Vector3(0, 1.001788f, 0);
             }
             /*if (!jumping)
             {
