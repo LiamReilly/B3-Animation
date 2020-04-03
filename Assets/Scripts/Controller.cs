@@ -127,7 +127,7 @@ public class Controller : MonoBehaviour
                 anim.SetTrigger("Jump");
                 rb.AddForce(new Vector3(0, jumpForce, 0));
                 jumping = true;
-                StartCoroutine(wait3Seconds());
+                StartCoroutine(wait(1.5f));
             }
     }
 
@@ -168,13 +168,6 @@ public class Controller : MonoBehaviour
             //Debug.Log(velocity.x);
             
             anim.SetBool("Move", move);
-            if (Input.GetKey(KeyCode.Space) && !jumping)
-            {
-                anim.SetTrigger("Jump");
-                rb.AddForce(new Vector3(0, jumpForce, 0));
-                jumping = true;
-                StartCoroutine(wait3Seconds());
-            }
             if (Input.GetKey(KeyCode.Delete))
             {
                 anim.SetTrigger("Die");
@@ -238,9 +231,9 @@ public class Controller : MonoBehaviour
         
 
     }
-    IEnumerator wait3Seconds()
+    IEnumerator wait(float f)
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(f);
         jumping = false;
     }
 }
