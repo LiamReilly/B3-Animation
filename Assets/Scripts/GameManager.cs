@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour
     private GameObject Creatormanager;
     private GameObject SelectButton;
     public GameObject DeselectButton;
+    private AudioSource audio1;
+    private bool play;
+    public Material kapadia;
+    public Material wood;
+    public GameObject Room1;
 
 
     private void Start()
@@ -25,6 +30,7 @@ public class GameManager : MonoBehaviour
         Creatormanager = GameObject.Find("AgentCreator");
         SelectButton = GameObject.Find("SelectAll");
         StartCoroutine(wait3Seconds());
+        audio1 = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -64,6 +70,24 @@ public class GameManager : MonoBehaviour
         Creatormanager.gameObject.GetComponent<AgentCreater>().DeselectAll();
         SelectButton.gameObject.SetActive(true);
         DeselectButton.gameObject.SetActive(false);
+    }
+
+    public void GSC()
+    {
+        if (!play)
+        {
+            audio1.Play();
+            play = true;
+            MeshRenderer gameObjectRenderer = Room1.gameObject.GetComponent<MeshRenderer>();
+            gameObjectRenderer.material = kapadia;
+        }
+        else
+        {
+            audio1.Stop();
+            play = false;
+            MeshRenderer gameObjectRenderer = Room1.gameObject.GetComponent<MeshRenderer>();
+            gameObjectRenderer.material = wood;
+        }
     }
 
 }
