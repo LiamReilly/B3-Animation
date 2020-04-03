@@ -134,14 +134,15 @@ public class Controller : MonoBehaviour
                 StartCoroutine(wait(1.5f));
             }
         }
-        if (!jumping && !inAir && rb.velocity.y < -0.5f)
-        {
-            inAir = true;
-        }
-        if (inAir && rb.velocity.y >= 0)
-        {
-            inAir = false;
-        }
+        //Messed up the animations so I disabled this
+        // if (!jumping && !inAir && rb.velocity.y < -2f)
+        // {
+        //     inAir = true;
+        // }
+        // if (inAir && rb.velocity.y >= 0)
+        // {
+        //     inAir = false;
+        // }
 
     }
 
@@ -157,11 +158,11 @@ public class Controller : MonoBehaviour
             //velocity = rb.velocity;
             //Debug.Log(rb.velocity);
             
-            if (inAir)
-            {
-                vert = 0;
-                horz = 0;
-            }
+            // if (inAir)
+            // {
+            //     vert = 0;
+            //     horz = 0;
+            // }
 
                 if (AutoMan.walkingTell())
                 {
